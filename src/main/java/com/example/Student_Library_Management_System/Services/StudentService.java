@@ -1,11 +1,14 @@
 package com.example.Student_Library_Management_System.Services;
 
+import com.example.Student_Library_Management_System.DTos.StudentUpdateMobRequestDto;
 import com.example.Student_Library_Management_System.Enums.CardStatus;
 import com.example.Student_Library_Management_System.Models.Card;
 import com.example.Student_Library_Management_System.Models.Student;
 import com.example.Student_Library_Management_System.Repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -27,5 +30,41 @@ public class StudentService {
         // By cascading effect , child will automatically be saved.
 
         return "student and card added";
+    }
+    public String findNameByEmail(String email){
+        Student student=studentRepository.findByEmail(email);
+        // this findByEmail is inbuilt type but we have to define it
+        return student.getName();
+    }
+    public List<Student> findByCountry(String country){
+        List<Student> studentList=studentRepository.findByCountry(country);
+        return studentList;
+    }
+
+    /* this is the old flow of update mobile */
+//    public String updateMobNo(Student newStudent){
+//        // first we will try to fetch original data
+//        Student originalStudent=studentRepository.findById(newStudent.getId()).get();
+//        // we will keep the other properties as it is : and only change the required parameters
+//        originalStudent.setMobile(newStudent.getMobile());
+//        studentRepository.save(originalStudent);
+//        return "Student has been updated Successfully";
+//    }
+
+    /* this is the new flow using dto to update mobile */
+    public String updateMobNo(StudentUpdateMobRequestDto studentUpdateMobRequestDto){
+
+        // convert dto to entity: saved better
+
+
+        // first we will try to fetch original data
+        Student originalStudent=studentRepository.findById(studentUpdateMobRequestDto.getId()).get();
+        // we will keep the other properties as it is : and only change the required parameters
+        originalStudent.setMobile(studentUpdateMobRequestDto.getMobile());
+
+        //always entity object is being saved
+        studentRepository.save(originalStudent);
+
+        return "Student has been updated Successfully";
     }
 }

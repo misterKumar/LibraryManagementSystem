@@ -21,6 +21,11 @@ public class Student {
     //    Student student this student variable have to mention in parent class
     @OneToOne(mappedBy = "studentVariableName",cascade = CascadeType.ALL)
     private Card card;
+    /*
+        steps to find that varible
+        1.Go to childclass(in this case)
+        2. Out of all the attributes select the foreign key attribute that is helping you to connect with parent class
+     */
 
     public Student() {
         // this constructor is for beans caused by entity
